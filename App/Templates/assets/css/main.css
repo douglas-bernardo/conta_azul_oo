@@ -1,0 +1,82 @@
+/* top */
+
+#menu-top li{
+    width: 20px;
+    height: 20px;
+    margin-right: 17px;
+    background-size: 20px 20px; 
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#menu-top li:nth-child(1){
+    background-image: url("../img/talk.png");
+}
+
+#menu-top li:nth-child(2){
+    background-image: url("../img/notifications-button.png");
+}
+
+#menu-top li:nth-child(3){
+    background-image: url("../img/boy-avatar.png");
+}
+
+#menu-top li:nth-child(4){
+    width: auto;
+    height: 20px;
+    line-height: 20px;
+    color: #FFF;
+}
+
+
+/* main content */
+#page-content-wrapper{
+    width: 100%;
+    position: absolute;
+    
+}
+
+#menu-toggle{
+    width: 30px;
+    height: 30px;
+    background-image: url("../img/menu-lines.png");
+    background-size: 30px 30px; 
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#notifications{
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    background-image: url("../img/notifications-button.png");
+    background-size: 20px 20px; 
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#talk{
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    background-image: url("../img/talk.png");
+    background-size: 20px 20px; 
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#avatar{
+    width: 30px;
+    height: 30px;
+    margin-top: 5px;
+    background-image: url("../img/boy-avatar.png");
+    background-size: 30px 30px; 
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.wrapper_form{
+    padding: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 1px 1px 1px #a3a0a0;
+}

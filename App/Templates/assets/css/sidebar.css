@@ -1,0 +1,205 @@
+/* Logo */
+.company_name{
+    height: 100px;
+    line-height: 100px;
+    color: #FFF;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Sidebar */   
+#sidebar-wrapper{
+    z-index: 1;
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    overflow-y: hidden;
+    background: #1f232a;
+    /*border: 2px solid red;*/
+    /*opacity: 0.9;*/
+    transition: all 0.2s;
+}
+
+#page-content-wrapper{
+    padding-left: 200px;
+}
+
+#wrapper.menuDisplayed #sidebar-wrapper{
+    width: 0;
+    transition: all 0.2s;
+}
+
+#wrapper.menuDisplayed #page-content-wrapper{
+    padding-left: 0px;
+    transition: all 0.2s;
+}
+
+.sidebar-nav{
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 15px;
+    padding-left: 50px;
+    background-size: 15px 15px; 
+    background-repeat: no-repeat;
+    background-position: 20px 15px;
+}
+
+/* Icons */
+.sidebar-nav li:nth-child(1){
+    background-image: url("../img/home.png");
+}
+
+.sidebar-nav li:nth-child(2){
+    background-image: url("../img/key.png");
+}
+
+.sidebar-nav li:nth-child(3){
+    background-image: url("../img/user.png");
+}
+
+.sidebar-nav li:nth-child(4){
+    background-image: url("../img/clients.png");
+}
+
+.sidebar-nav li:nth-child(5){
+    background-image: url("../img/inventory.png");
+}
+
+.sidebar-nav li:nth-child(6){
+    background-image: url("../img/purchases.png");
+}
+
+.sidebar-nav li:nth-child(7){
+    background-image: url("../img/sales.png");
+}
+
+.sidebar-nav li:nth-child(8){
+    background-image: url("../img/reports.png");
+}
+
+.sidebar-nav li:nth-child(9){
+    background-image: url("../img/logout.png");
+}
+
+/* behavior */
+
+.sidebar-nav li a{
+    display: block;
+    text-decoration: none;
+    color: #DDD;
+}
+
+.sidebar-nav li:hover{
+    background-color: #16A085;
+}
+
+@media only screen and (max-width:768px){
+        
+    /* Logo */
+    .company_name{
+        height: 100px;
+        line-height: 100px;
+        color: #FFF;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    /* Sidebar */   
+    #sidebar-wrapper{
+        z-index: 1;
+        position: fixed;
+        width: 0px;
+        height: 100%;
+        overflow-y: hidden;
+        background: #1f232a;
+        /*border: 2px solid red;*/
+        /*opacity: 0.9;*/
+        transition: all 0.2s;
+    }
+
+    #page-content-wrapper{
+        padding-left: 0px;
+    }
+
+    #wrapper.menuDisplayed #sidebar-wrapper{
+        width: 200px;
+        transition: all 0.2s;
+    }
+
+    #wrapper.menuDisplayed #page-content-wrapper{
+        padding-left: 200px;
+        transition: all 0.2s;
+    }
+
+    .sidebar-nav{
+        padding: 0;
+        list-style: none;
+    }
+
+    .sidebar-nav li {
+        text-indent: 20px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 15px;
+        padding-left: 50px;
+        background-size: 15px 15px; 
+        background-repeat: no-repeat;
+        background-position: 20px 15px;
+    }
+
+    /* Icons */
+    .sidebar-nav li:nth-child(1){
+        background-image: url("../img/home.png");
+    }
+    
+    .sidebar-nav li:nth-child(2){
+        background-image: url("../img/key.png");
+    }
+    
+    .sidebar-nav li:nth-child(3){
+        background-image: url("../img/user.png");
+    }
+    
+    .sidebar-nav li:nth-child(4){
+        background-image: url("../img/clients.png");
+    }
+    
+    .sidebar-nav li:nth-child(5){
+        background-image: url("../img/inventory.png");
+    }
+    
+    .sidebar-nav li:nth-child(6){
+        background-image: url("../img/purchases.png");
+    }
+    
+    .sidebar-nav li:nth-child(7){
+        background-image: url("../img/sales.png");
+    }
+    
+    .sidebar-nav li:nth-child(8){
+        background-image: url("../img/reports.png");
+    }
+
+    .sidebar-nav li:nth-child(9){
+        background-image: url("../img/logout.png");
+    }
+
+    /* behavior */
+
+    .sidebar-nav li a{
+        display: block;
+        text-decoration: none;
+        color: #DDD;
+    }
+
+    .sidebar-nav li:hover{
+        background-color: #16A085;
+    }
+
+}

@@ -1,0 +1,39 @@
+<?php
+namespace Livro\Traits;
+
+use Livro\Control\Action;
+use Livro\Database\Transaction;
+use Livro\Widgets\Dialog\Message;
+use Livro\Widgets\Dialog\Question;
+use Exception;
+/**
+ * 
+ */
+trait DeleteTrait
+{
+    function onDelete($param)
+    {
+        $id = $param['id'];
+        $action1 = new Action(array($this, 'Delete'));
+        $action1->setParameter('id', $id);
+        //confirmação
+        new Question('Deseja realmente excluir o registro?', $action1);
+    }
+
+    function Delete($param)
+    {
+        try{
+            $id = $param['id'];
+            Transaction::open($this->connection);               //abre a transação
+            $class = $this->activeRecord;  //cria um repositório
+            $object = $class::find($id);
+            $object->delete();
+            Transaction::close();
+            $this->onReload();
+            new Message('info', "Registro excluído com sucesso!");
+        }
+        catch(Exception $e){
+            new Message('error', $e->getMessage());
+        }
+    }
+}
