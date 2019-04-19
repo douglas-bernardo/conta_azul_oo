@@ -38,6 +38,7 @@ class Datagrid extends Table
     public function createModel()
     {
         $thead = new Element('thead');
+        $thead->class = 'thead-dark';
         parent::add($thead);
         //adiciona uma linha a tabela
         $row = new Element('tr');
@@ -63,10 +64,11 @@ class Datagrid extends Table
                 $width = $column->getWidth();
 
                 $celula = new Element('th');
+                $celula->scope = "col";
                 $celula->add($label);
                 //adiciona a célula com a coluna
                 $row->add($celula);
-                $celula->style = "text-align:$align";
+                $celula->style = "text-align:$align";//melhorado
                 $celula->width = $width;
 
                 //verifica se a coluna do cabeçalho tem uma ação
@@ -82,6 +84,7 @@ class Datagrid extends Table
     {
         //adiciona uma linha a Datagrid
         $row = parent::addRow();
+        $row->scope = "row";
 
         //verifica se a listagem contém ações
         if($this->actions){
@@ -91,7 +94,7 @@ class Datagrid extends Table
                 $url   = $action->serialize();
                 $label = $action->getLabel();
                 $image = $action->getImage();
-                $field = $action->getField();
+                $field = $action->getField();//nome do campo
 
                 //obtem o valor do campo do objeto que será passado adiante
                 $key = $object->$field;
@@ -114,6 +117,7 @@ class Datagrid extends Table
                 }
                 //adiciona a celula a linha
                 $row->addCell($link);
+                $row->align = 'center';//alinha as ações * adaptado
             }
         }
 

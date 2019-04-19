@@ -23,7 +23,7 @@ class Question {
             $url_no = $action_no->serialize();
             $link_no = new Element('a');
             $link_no->href = $url_no;
-            $link_no->class = 'btn btn-default';
+            $link_no->class = 'btn btn-primary';
 
             $link_no->add('Não');
             $message .= $link_no;

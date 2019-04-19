@@ -40,7 +40,7 @@ final class Connection{//final class não pode ter descendentes - n pode ser sup
                 break;                
         }
 
-        //define para que o PDO  lance as exceções na ocorrência de erros
+        //define para que o PDO lance as exceções na ocorrência de erros
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;
     }    

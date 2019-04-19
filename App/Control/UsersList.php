@@ -5,6 +5,7 @@ use Livro\Widgets\Datagrid\Datagrid;
 use Livro\Widgets\Datagrid\DatagridColumn;
 use Livro\Widgets\Datagrid\DatagridAction;
 use Livro\Widgets\Dialog\Message;
+use Livro\Widgets\Wrapper\DatagridWrapper;
 
 class UsersList extends Page
 {
@@ -20,7 +21,7 @@ class UsersList extends Page
         parent::add($btn);
 
         //instancia o obj Datagrid
-        $this->datagrid = new Datagrid;
+        $this->datagrid = new DatagridWrapper(new Datagrid);
         $this->datagrid->border = 1;
 
         //instancia as colunas da Datagrid - Cabeçalho
@@ -35,7 +36,7 @@ class UsersList extends Page
 
         $situacao->setTransformer(array($this, 'converterParaMaiusculo'));
 
-        //instancia duas ações da Datagrid
+        //instancia uma ação da Datagrid
         $action1 =  new DatagridAction(array($this, 'onVisualiza'));
         $action1->setLabel('Visualizar');
         $action1->setImage('ico_view.png');

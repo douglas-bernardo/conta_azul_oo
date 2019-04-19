@@ -1,5 +1,6 @@
 <?php
 namespace Livro\Widgets\Container;
+
 use Livro\Widgets\Base\Element;
 
 Class Table extends Element{
