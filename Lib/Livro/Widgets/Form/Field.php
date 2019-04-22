@@ -11,12 +11,10 @@ abstract class Field implements FormElementInterface {
     protected $tag;
     protected $formLabel;
 
-    public function __construct($name, $required = false){
+    public function __construct($name){
         self::setEditable(true);
         self::setName($name);
-        //self::setSize(200);
-        $this->tag = new Element('input', $required);
-        $this->tag->class = 'form-control';
+        $this->tag = new Element('input');
     }
 
     public function setProperty($name, $value){

@@ -8,7 +8,8 @@ class Combo extends Field implements FormElementInterface
 {
     private $items;//array contendo os itens do combo
 
-    public function __construct($name){
+    public function __construct($name)
+    {
         //executa o método construtor da classe pai
         parent::__construct($name);
 

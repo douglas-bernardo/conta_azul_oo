@@ -5,30 +5,53 @@ use Livro\Widgets\Base\Element;
 
 class Card extends Element
 {
+    private $header;
     private $body;
-    public function __construct($card_header = NULL, $card_tittle = NULL){
+    private $footer;
+
+    public function __construct($card_title = NULL)
+    {        
         parent::__construct('div');
         $this->class = 'card mb-3';
-        if($card_header){
-            $label = new Element('h5');
-            $label->class = 'card-header';
-            $label->add($card_header);
-            parent::add($label);
-        }
 
+        //cria o cabeçalho do card
+        $this->header = new Element('h5');
+        $this->header->class = 'card-header';
+
+        //cria o corpo do card
         $this->body = new Element('div');
         $this->body->class = 'card-body';
-        parent::add($this->body);
 
-        if ($card_tittle) {
+        //se for informado um titulo no construtor esse titulo fica dentro do body do card
+        if ($card_title)
+        {
             $label = new Element('h5');
             $label->class = 'card-title';
-            $label->add($card_tittle);
+            $label->add($card_title);
             $this->body->add($label);
         }
 
+        //cria o footer do card
+        $this->footer = new Element('div');
+        $this->footer->class = 'card-footer';
+
     }
-    public function add($content){
+
+    public function setHeader($header)
+    {   
+        $this->header->add($header);
+        parent::add($this->header);
+    }
+
+    public function setBody($content)
+    {
         $this->body->add($content);
+        parent::add($this->body);
+    }
+
+    public function setFooter($footer)
+    {
+        $this->footer->add($footer);
+        parent::add($this->footer);
     }
 }

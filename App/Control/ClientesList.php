@@ -29,7 +29,6 @@ class ClientesList extends Page
 
         //instancia o objeto data grid
         $this->datagrid = new DatagridWrapper(new Datagrid);
-        $this->datagrid->style = 'max-width: 750px';
 
         //instancia as colunas da data grid
         $nome     = new DatagridColumn('name', 'Nome', 'center', 300);
@@ -129,7 +128,7 @@ class ClientesList extends Page
         return utf8_encode($value);
     }
 
-    function show(Type $var = null)
+    function show()
     {
         //se a listagem ainda não foi carregada
         if(!$this->loaded){

@@ -10,7 +10,7 @@ class Button extends Field implements FormElementInterface
     private $action;
     private $label;
     private $formName;
-    private $class;
+    //private $class;
 
     public function setAction(ActionInterface $action, $label)
     {
@@ -34,7 +34,7 @@ class Button extends Field implements FormElementInterface
         //define as propriedades do botão
         $this->tag->name = $this->name; //nome da tag
         $this->tag->type = 'button'; //tipo de input
-        $this->tag->class = $this->class;    
+        //$this->tag->class = $this->class;    
         $this->tag->value = $this->label; //rótulo do botão
 
         //define a ação do botão

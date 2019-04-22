@@ -13,15 +13,19 @@ class HomeControl extends Page
         $row = new Row;
 
         //criando um card:
-        $card = new Card('Featured', 'Special title treatment');
-        $card->add('With supporting text below as a natural lead-in to additional content.');
+        $card = new Card('Special title treatment');
+        $card->setHeader('Featured');
+        $card->setBody('With supporting text below as a natural lead-in to additional content.');
+        $card->setFooter('teste');
 
-        //criando um card2:
-        $card2 = new Card('Featured', 'Special title treatment');
-        $card2->add('With supporting text below as a natural lead-in to additional content.');
+        // //criando um card2:
+        $card2 = new Card('Special title treatment');
+        $card2->setHeader('Featured');
+        $card2->setBody('With supporting text below as a natural lead-in to additional content.');
+        $card2->setFooter('teste');
 
 
-        //criando uma col Bootstrap:
+        // //criando uma col Bootstrap:
         $col = $row->addCol($card);// add conteudo a coluna
         $col->class = 'col-sm-6';
 

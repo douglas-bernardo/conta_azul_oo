@@ -6,43 +6,50 @@ use Livro\Widgets\Datagrid\DatagridColumn;
 use Livro\Widgets\Datagrid\DatagridAction;
 use Livro\Widgets\Dialog\Message;
 use Livro\Widgets\Wrapper\DatagridWrapper;
+use Livro\Database\Transaction;
+use Livro\Database\Repository;
+use Livro\Database\Criteria;
 
 class UsersList extends Page
 {
     private $datagrid;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
-        $btn = new Element('button');
-        $btn->type = "button";
+        $btn = new Element('a');
         $btn->class = "btn btn-primary mb-3";
+        $btn->href = 'index.php?class=UsersForm';
         $btn->add("Novo");
         parent::add($btn);
 
         //instancia o obj Datagrid
         $this->datagrid = new DatagridWrapper(new Datagrid);
-        $this->datagrid->border = 1;
 
         //instancia as colunas da Datagrid - Cabeçalho
+        $id = new DatagridColumn('id', 'Id', 'center', 100);
         $email = new DatagridColumn('email', 'Email Usuário', 'center', 200);
-        $grupo = new DatagridColumn('grupo', 'Grupo Permissões', 'center', 200);
-        $situacao = new DatagridColumn('situacao', 'Situação', 'center', 200);
+        $grupo = new DatagridColumn('id_group', 'Grupo Permissões', 'center', 200);
 
         //adiciona as colunas à Datagrid
+        $this->datagrid->addColumn($id);
         $this->datagrid->addColumn($email);
         $this->datagrid->addColumn($grupo);
-        $this->datagrid->addColumn($situacao);
 
-        $situacao->setTransformer(array($this, 'converterParaMaiusculo'));
+        //instancia duas ações da datagrid
+        $action1 = new DatagridAction(array($this, 'onEdit'));
+        $action1->setLabel('Editar');
+        $action1->setImage('ico_edit.png');
+        $action1->setField('id');
 
-        //instancia uma ação da Datagrid
-        $action1 =  new DatagridAction(array($this, 'onVisualiza'));
-        $action1->setLabel('Visualizar');
-        $action1->setImage('ico_view.png');
-        $action1->setField('email');
+        $action2 = new DatagridAction(array($this, 'onDelete'));
+        $action2->setLabel('Excluir');
+        $action2->setImage('ico_delete.png');
+        $action2->setField('id');
 
         $this->datagrid->addAction($action1);
+        $this->datagrid->addAction($action2);
 
         //cria o modelo da Datagrid montando sua estrutura (cabeçalho)
         $this->datagrid->createModel();
@@ -53,32 +60,24 @@ class UsersList extends Page
 
     public function onReload()
     {
+        Transaction::open('contaazul');
+        $repository = new Repository('Users');
+
+        //cria um critério de seleção de dados
+        $criteria = new Criteria;
+        $criteria->setProperty('order', 'id');
+
+        //carrega os produtos que satisfazem o critério
+        $users = $repository->load($criteria);
         $this->datagrid->clear();
-
-        $u1 = new stdClass;
-        $u1->email = 'jkdouglas21@gmail.com';
-        $u1->grupo = 'Developers';
-        $u1->situacao = 'Ativo';
-        $this->datagrid->addItem($u1);
-
-        $u2 = new stdClass;
-        $u2->email = 'jkdouglas21@gmail.com';
-        $u2->grupo = 'Developers';
-        $u2->situacao = 'Ativo';
-        $this->datagrid->addItem($u2);
-
-        $u3 = new stdClass;
-        $u3->email = 'jkdouglas21@gmail.com';
-        $u3->grupo = 'Developers';
-        $u3->situacao = 'Ativo';
-        $this->datagrid->addItem($u3);
-
-        $u4 = new stdClass;
-        $u4->email = 'jkdouglas21@gmail.com';
-        $u4->grupo = 'Developers';
-        $u4->situacao = 'Ativo';
-        $this->datagrid->addItem($u4);
-
+        if($users){
+            foreach ($users as $user) {
+                //adiciona cada objeto a datagrid
+                $this->datagrid->addItem($user);
+            }
+        }
+        Transaction::close();
+        $this->loaded = true;
     }
 
     public function converterParaMaiusculo($value)
@@ -86,14 +85,22 @@ class UsersList extends Page
         return strtoupper($value);
     }
 
-    public function onVisualiza($param)
+    public function onEdit($param)
     {
-        new Message('info', 'Você cliclou sobre o registro: ' . $param['email']);
+        new Message('info', 'Você clicou sobre o registro: ' . $param['email']);
     }
 
-    public function show()
+    public function onDelete($param)
     {
-        $this->onReload();
+        new Message('info', 'Você clicou sobre o registro: ' . $param['email']);
+    }
+
+    function show()
+    {
+        //se a listagem ainda não foi carregada
+        if(!$this->loaded){
+            $this->onReload();
+        }
         parent::show();
     }
 

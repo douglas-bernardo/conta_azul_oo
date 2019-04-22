@@ -7,95 +7,68 @@ use Livro\Widgets\Container\Table;
 use Livro\Widgets\Container\Row;
 use Livro\Control\ActionInterface;
 use Livro\Widgets\Container\HBox;
+use Livro\Widgets\Container\Card;
 
-class Form extends Element {
+class Form extends Element
+{
     protected $fields;
     protected $actions;
-    protected $table;
+    protected $title;
     private $has_action;
     private $actions_container;
 
-    public function __construct($name = 'my_form'){
+    public function __construct($name = 'my_form')
+    {
         parent::__construct('form');
         $this->enctype = "multipart/form-data";
         $this->method = 'post';
         $this->setName($name);
-        //$this->table = new Table;
-        //$this->table->width = '100%';
-        //parent::add($this->table);
     }
 
-    public function setName($name){
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function setFormTitle($title){
-        //$row = $this->table->addRow();
-        // $row->{'class'} = 'form-title';
-        // $cell = $row->addCell($title);
-        // $cell->{'colspan'} = 2;
-
+    public function setFormTitle($title)
+    {
+        $this->title = $title;
     }
 
-    public function addField($label, FormElementInterface $object, $size = 200){
-        //$object->setSize($size, $size);
-        $this->fields[$object->getName()] = $object;
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function addField($label, FormElementInterface $object, $size = '100%')
+    {
+        $object->setSize($size);
         $object->setLabel($label);
-
-        //$row = $this->table->addRow();
-        $form_group = new Element('div');
-        $form_group->class = "form-group col-lg-6";
-
-        $label_field = new Label($label);
-        $label_field->for = $object->id;
-        if ($object instanceof Hidden){
-            //$row->addCell('');
-            //$form_group->add('');
-        }
-        else {
-            //$row->addCell($label_field);
-            $form_group->add($label_field);//adiciona o label do campo a div form group
-        }
-        $form_group->add($object);
-        //return $form_group;
-        parent::add($form_group);
+        $this->fields[$object->getName()] = $object;
     }
 
-    public function addAction($label, ActionInterface $action, $class = 'btn btn-primary ml-3'){
-        $name = strtolower(str_replace(' ','_',$label));
-        $button = new Button($name);
-
-        $button->setFormName($this->name);
-        $button->setAction($action, $label);
-        $button->setClass($class);
-
-        parent::add($button);
-        // if(!$this->has_action){
-        //     $this->actions_container = new HBox;
-        //     $row = $this->table->addRow();
-        //     $row->{'class'} = 'formaction';
-        //     $cell = $row->addCell($this->actions_container);
-        //     $cell->colspan = 2;
-        // }
-        // $this->actions_container->add($button);
-        // $this->has_action = TRUE;
-        // $this->actions[] = $button;
-        // return $button;
+    public function addAction($label, ActionInterface $action)
+    {
+        $this->actions[$label] = $action;
     }
 
-    public function getFields(){
+    public function getFields()
+    {
         return $this->fields;
     }
 
-    public function getActions(){
+    public function getActions()
+    {
         return $this->actions;
     }
 
-    public function setData($object){
+    public function setData($object)
+    {
         foreach ($this->fields as $name => $field){
             if ($name AND isset($object->$name)){
                 $field->setValue($object->$name);
@@ -103,7 +76,8 @@ class Form extends Element {
         }
     }
 
-    public function getData($class = 'stdClass'){
+    public function getData($class = 'stdClass')
+    {
         $object = new $class;
 
         foreach($this->fields as $key => $fieldObject){

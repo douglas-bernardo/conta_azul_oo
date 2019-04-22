@@ -5,45 +5,43 @@ use Livro\Control\Action;
 use Livro\Widgets\Container\Row;
 use Livro\Widgets\Form\Form;
 use Livro\Widgets\Form\Entry;
+use Livro\Widgets\Form\Combo;
 use Livro\Widgets\Dialog\Modal;
 use Livro\Widgets\Dialog\Message;
 use Livro\Widgets\Base\Element;
+use Livro\Widgets\Wrapper\FormWrapper;
+use Livro\Database\Transaction;
 
 class UsersForm extends Page
 {
     private $form;
+
     public function __construct() {
         parent::__construct();
 
-        //page title
-        $row = new Row;
-        $row->class .= ' pl-3 pt-3 mb-3';
-        $label = new Element('h3');
-        $label->add('Usuários');
-        $col = $row->addCol($label);
-        $col->class = 'col-3';
-        parent::add($row);
+        //instancia de um formulário
+        $this->form = new FormWrapper(new Form('form_users'));
+        $this->form->setFormTitle('Cadastro de Usuários');
 
-        $this->form = new Form('form_users');
-
-        $user_name = new Entry('nome', TRUE);
-        $user_name->id = 'name';
+        //cria os campos do formulário
         $user_email = new Entry('email');
         $user_email->id = 'email';
-        $user_password = new Entry('password');
-        $user_password->id = 'pass';
+        $user_pass = new Entry('password');
+        $user_pass->id = 'password';
+        $permission = new Combo('id_group');
 
-        $this->form->addField('Nome', $user_name);
+
         $this->form->addField('Email', $user_email);
-        $this->form->addField('Senha', $user_password);
+        $this->form->addField('Senha', $user_pass );
+        $this->form->addField('Grupo de Permissões', $permission);
+
+        $permission->addItems(array('1'=>'Desenvolvedores', 
+                                    '2'=>'Novo Grupo Teste'));
 
         $this->form->addAction('Salvar', new Action(array($this, 'onSave')));
+        $this->form->addAction('Limpar', new Action(array($this, 'onClear')));
 
-        $wrapper_form = new Element('div');
-        $wrapper_form->class = "wrapper_form";
-        $wrapper_form->add($this->form);
-        parent::add($wrapper_form);
-
+        parent::add($this->form);
 
         // $btn = new Element('button');
         // $btn->type = "button";
@@ -62,6 +60,34 @@ class UsersForm extends Page
 
     public function onSave()
     {
-        new Message('info', "Registro salvo com sucesso!");
+        try {
+
+            
+            Transaction::open('contaazul');
+
+            //obtem os dados
+            //$dados = $this->form->getData();
+
+            //validação
+            // if(empty($dados->email)){
+            //     throw new Exception("Email vazio");
+            // }
+
+            $user = new Users;//classe Users carregada no index pelo autoload
+            $user->email = addslashes($_POST['email']);
+            $user->password = md5($_POST['password']);
+            $user->id_group = addslashes($_POST['id_group']);
+            $user->store();
+
+            Transaction::close();
+            new Message('info', "Registro salvo com sucesso!");
+
+        } catch (Exception $e) {
+            new Message('error', "<b>Erro:</b> " . $e->getMessage());
+        }
+    }
+
+    public function onClear()
+    {
     }
 }

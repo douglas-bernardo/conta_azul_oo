@@ -15,7 +15,7 @@ class Element{
     
     public function __set($name, $value)
     {
-        $name = str_replace('_','-',$name);//adaptado classes bootstrap usam hifen '-'
+        $name = str_replace('_','-',$name);//adaptado paraas classes modal bootstrap usam hifen '-'
         // armazena os valores atribuidos no array properties
         $this->properties[$name] = $value;
     }
