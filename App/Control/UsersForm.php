@@ -66,21 +66,38 @@ class UsersForm extends Page
             Transaction::open('contaazul');
 
             //obtem os dados
-            //$dados = $this->form->getData();
+            $dados = $this->form->getData();
 
             //validação
-            // if(empty($dados->email)){
-            //     throw new Exception("Email vazio");
-            // }
+            if(empty($dados->email)){
+                throw new Exception("Email vazio");
+            }
 
             $user = new Users;//classe Users carregada no index pelo autoload
-            $user->email = addslashes($_POST['email']);
-            $user->password = md5($_POST['password']);
-            $user->id_group = addslashes($_POST['id_group']);
+            $user->fromArray( (array) $dados);
             $user->store();
 
+            Transaction::close();            
+            header("Location: index.php?class=UsersList&method=confirm");
+
+        } catch (Exception $e) {
+            new Message('error', "<b>Erro:</b> " . $e->getMessage());
+        }
+    }
+
+    public function onEdit($param)
+    {
+        try {
+            Transaction::open('contaazul');
+
+            $id = $param['id'];
+
+            $user = Users::find($id);
+            if ($user) {
+                $this->form->setData($user);
+            }
+
             Transaction::close();
-            new Message('info', "Registro salvo com sucesso!");
 
         } catch (Exception $e) {
             new Message('error', "<b>Erro:</b> " . $e->getMessage());

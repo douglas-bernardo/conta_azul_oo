@@ -5,7 +5,7 @@ use Livro\Widgets\Base\Element;
 
 class Message 
 {
-    public function __construct($type, $message){
+    public function __construct($type, $message, $location = null){
         $div = new Element('div');
         if($type == 'info'){
             $div->class = 'alert alert-info alert-dismissible fade show w-50';
@@ -19,6 +19,10 @@ class Message
         $button->data_dismiss = "alert";
         $button->area_label = "Close";
         $span = new Element('span');
+        $span->id = 'message-button';
+        if ($location){
+            $span->data_url = $location;
+        }
         $span->aria_hidden = "true";
         $span->add('&times;');
         $button->add($span);

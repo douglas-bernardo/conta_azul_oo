@@ -71,7 +71,9 @@ class Form extends Element
     {
         foreach ($this->fields as $name => $field){
             if ($name AND isset($object->$name)){
+                if ($name != 'password'){ 
                 $field->setValue($object->$name);
+                }
             }
         }
     }

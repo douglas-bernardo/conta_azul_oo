@@ -1,10 +1,12 @@
 <?php
 use Livro\Control\Page;
+use Livro\Control\Action;
 use Livro\Widgets\Base\Element;
 use Livro\Widgets\Datagrid\Datagrid;
 use Livro\Widgets\Datagrid\DatagridColumn;
 use Livro\Widgets\Datagrid\DatagridAction;
 use Livro\Widgets\Dialog\Message;
+use Livro\Widgets\Dialog\Question;
 use Livro\Widgets\Wrapper\DatagridWrapper;
 use Livro\Database\Transaction;
 use Livro\Database\Repository;
@@ -38,7 +40,7 @@ class UsersList extends Page
         $this->datagrid->addColumn($grupo);
 
         //instancia duas ações da datagrid
-        $action1 = new DatagridAction(array($this, 'onEdit'));
+        $action1 = new DatagridAction(array(new UsersForm, 'onEdit'));
         $action1->setLabel('Editar');
         $action1->setImage('ico_edit.png');
         $action1->setField('id');
@@ -85,14 +87,36 @@ class UsersList extends Page
         return strtoupper($value);
     }
 
-    public function onEdit($param)
+    public function confirm()
     {
-        new Message('info', 'Você clicou sobre o registro: ' . $param['email']);
+        new Message('info', "Registro salvo com sucesso!", "index.php?class=UsersList");
     }
 
     public function onDelete($param)
     {
-        new Message('info', 'Você clicou sobre o registro: ' . $param['email']);
+        $id = $param['id']; // obtém o parâmetro $id
+        $action1 = new Action(array($this, 'Delete'));
+        $action1->setParameter('id', $id);
+        $action2 = new Action(array($this, 'onReload'));
+        new Question('Deseja realmente excluir o registro?', $action1, $action2);
+    }
+
+    public function Delete($param)
+    {
+        try
+        {
+            $id = $param['id']; // obtém a chave
+            Transaction::open('contaazul'); // inicia transação com o banco 'livro'
+            $user = Users::find($id);
+            $user->delete(); // deleta objeto do banco de dados
+            Transaction::close(); // finaliza a transação
+            $this->onReload(); // recarrega a datagrid
+            new Message('info', "Registro excluído com sucesso", "index.php?class=UsersList");
+        }
+        catch (Exception $e)
+        {
+            new Message('error', $e->getMessage());
+        }
     }
 
     function show()
