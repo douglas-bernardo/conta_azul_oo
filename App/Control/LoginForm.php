@@ -1,76 +1,84 @@
 <?php
 use Livro\Control\Page;
 use Livro\Control\Action;
+use Livro\Widgets\Base\Element;
 use Livro\Widgets\Form\Form;
 use Livro\Widgets\Form\Entry;
 use Livro\Widgets\Form\Password;
 use Livro\Widgets\Wrapper\FormWrapper;
 use Livro\Widgets\Container\Panel;
-
+use Livro\Widgets\Dialog\Message;
+use Livro\Database\Transaction;
+use Livro\Database\Repository;
+use Livro\Database\Criteria;
+use Livro\Database\Filter;
 use Livro\Session\Session;
-/**
- * Formulário de Login
- */
+
 class LoginForm extends Page
 {
-    private $form; // formulário
-    
-    /**
-     * Construtor da página
-     */
+    private $form;
     public function __construct()
     {
+
         parent::__construct();
+        $div = new Element('div');
+        $div->class = 'wrapper';
 
-        // instancia um formulário
-        //$this->form = new FormWrapper(new Form('form_login'));
-        //$this->form->setTitle('Login');
-        
-        //$login      = new Entry('login');
-        //$password   = new Password('password');
-        
-        //$login->placeholder    = 'admin';
-        //$password->placeholder = 'admin';
-        
-        //$this->form->addField('Login',    $login,    200);
-        //$this->form->addField('Senha',    $password, 200);
-        //$this->form->addAction('Login', new Action(array($this, 'onLogin')));
+        $this->form = new FormWrapper(new Form('form_login'));
+        $this->form->setFormTitle('Faça Seu Login');
 
-        //$panel = new Panel('Login');
-        //$panel->add($this->form);
+        $email = new Entry('email');
+        $email->id = 'email';
 
-        // adiciona o formulário na página
-        //parent::add($panel);
+        $pass = new Entry('password');
+        $pass->id = 'password';
 
+        $this->form->addField('Email', $email);
+        $this->form->addField('Senha', $pass);
+
+        $this->form->addAction('Login', new Action(array($this, 'onLogin')));
+
+        $div->add($this->form);
+
+        parent::add($div);
 
     }
     
-    /**
-     * Login
-     */
-    public function onLogin($param)
+    public function onLogin()
     {
-        //$data = $this->form->getData();
-        //if ($data->login == 'admin' AND $data->password == 'admin')//form data
-        if(isset($_POST['username']) AND !empty($_POST['password'])){
+        if(isset($_POST['email']) AND !empty($_POST['password'])){
 
-            $username = $_POST['username'];
-            $pass = $_POST['password'];
+            try {
 
-            if($username == 'jkdouglas21@gmail.com' AND $pass == '123'){
+                $email = $_POST['email'];
+                $password = $_POST['password']; 
 
-                Session::setValue('logged', TRUE);
-                header("Location: index.php");
-                exit;
-                //echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
+                Transaction::open('contaazul');
+                $repository = new Repository('Users');
+
+                $criteria = new Criteria;
+                $criteria->add(new Filter('email', '=', $email));
+                $criteria->add(new Filter('password', '=', md5($password)));
+
+                $user = $repository->load($criteria);
+
+                if($user){
+                    Session::setValue('logged', TRUE);
+                    Session::setValue('user_email', $user[0]->email);
+                    Transaction::close();
+                    header("Location: index.php");
+                } else {
+                    new Message('error', "Usuário não encontrado :(");
+                }
+
+            } catch (Exception $e) {
+                new Message('error', $e->getMessage());
             }
+
         }
     }
-    
-    /**
-     * Logout
-     */
-    public function onLogout($param)
+
+    public function onLogout()
     {
         Session::setValue('logged', FALSE);
         echo "<script language='JavaScript'> window.location = 'index.php'; </script>";

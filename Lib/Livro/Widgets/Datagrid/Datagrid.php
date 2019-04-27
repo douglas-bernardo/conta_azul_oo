@@ -45,13 +45,20 @@ class Datagrid extends Table
         $thead->add($row);
 
         //adiciona celulas <th> vazias para cada ação (no cabeçalho ficam vazias)
-        if($this->actions){
-            foreach ($this->actions as $action){
-                $celula = new Element('th');
-                $celula->width = '40px';
-                $row->add($celula);
-            }
-        }
+        $celula = new Element('th');
+        $celula->width = "8%";
+        $celula->style = "text-align:center";
+        $celula->colspan = '2';
+        $celula->add('Ações');
+        $row->add($celula);
+
+        // if($this->actions){
+        //     foreach ($this->actions as $action){
+        //         $celula = new Element('th');
+        //         $celula->width = '40px';
+        //         $row->add($celula);
+        //     }
+        // }
 
         //adiciona as células <th> para os titulos das colunas do cabeçalho
         if($this->columns){

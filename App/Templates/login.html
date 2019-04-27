@@ -7,33 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="App/Templates/assets/css/bootstrap.min.css">
-
     <!-- Optional CSS -->
     <link rel="stylesheet" href="App/Templates/assets/css/login.css">
+
 </head>
-<body>
-    
-    <div class="wrapper">
+    <body>
 
-            <form class="form-signin" action="" method="POST" name="form_login">
+    <!-- <div class="wrapper">
+        <form class="form-signin" action="" method="POST" name="form_login">
+            <h2 class="form-signin-heading text-center">Faça Seu Login</h2>
+            <input type="email" class="form-control" name="email" placeholder="Endereço de e-mail" required autofocus="">
+            <input type="password" class="form-control" name="password" placeholder="Senha" required>                
+            <label class="checkbox">
+                <input type="checkbox" value="Lembrar" name="rememberMe">Lembrar
+            </label>                    
+            <button type="submit" class="btn btn-primary btn-block" onclick="document.form_login.action='?class=LoginForm&method=onLogin';document.form_login.submit()">Login</button>
+        </form>
+    </div> -->
 
-                <h2 class="form-signin-heading text-center">Faça Seu Login</h2>
-
-                <input type="email" class="form-control" name="username" placeholder="Endereço de e-mail" required autofocus="">
-                <input type="password" class="form-control" name="password" placeholder="Senha" required>
-                
-                <label class="checkbox">
-                    <input type="checkbox" value="Lembrar" name="rememberMe">
-                    Lembrar
-                </label>
-                
-                <button type="submit" class="btn btn-primary btn-block" onclick="document.form_login.action='?class=LoginForm&method=onLogin';document.form_login.submit()">Login</button>
-            </form>
-
+    <!-- Form login -->
+    <div class="container-fluid">    
+        {content}        
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="App/Templates/assets/js/jquery-3.3.1.min.js"></script>
-    <script src="App/Templates/assets/js/bootstrap.min.js" ></script>   
-</body>
+    <script src="App/Templates/assets/js/bootstrap.min.js" ></script>
+     
+    </body>
 </html>

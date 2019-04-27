@@ -30,9 +30,9 @@ class UsersList extends Page
         $this->datagrid = new DatagridWrapper(new Datagrid);
 
         //instancia as colunas da Datagrid - Cabeçalho
-        $id = new DatagridColumn('id', 'Id', 'center', 100);
+        $id = new DatagridColumn('id', 'Id', 'center', 40);
         $email = new DatagridColumn('email', 'Email Usuário', 'center', 200);
-        $grupo = new DatagridColumn('id_group', 'Grupo Permissões', 'center', 200);
+        $grupo = new DatagridColumn('nome_grupo', 'Grupo Permissões', 'center', 200);
 
         //adiciona as colunas à Datagrid
         $this->datagrid->addColumn($id);

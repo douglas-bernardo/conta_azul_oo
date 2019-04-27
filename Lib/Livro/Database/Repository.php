@@ -1,18 +1,18 @@
 <?php
-
 namespace Livro\Database;
 
-final class Repository{
-    
+final class Repository
+{    
     private $activeRecord;//classe manipulada pelo repositorio
-
-    function __construct($class){
+    function __construct($class)
+    {
         $this->activeRecord = $class;
     }
 
-    function load(Criteria $criteria){//injeção de dependencia
+    function load(Criteria $criteria)//injeção de dependencia
+    {
         //instancia a instrução de SELECT
-        $sql = "SELECT * FROM " . constant($this->activeRecord.'::TABLENAME');//nome da classe + constante = nome tabela no bd
+        $sql = "SELECT * FROM " . constant($this->activeRecord.'::TABLENAME');//nome da classe::constante = nome tabela no bd
 
         //Obtêm a cláusula  WHERE da classe criteria.
         if($criteria){
@@ -41,11 +41,9 @@ final class Repository{
         //obtêm a transação ativa
         if($conn = Transaction::get()){
             Transaction::log($sql); //registra mensagem de log
-
             //executa consulta ao banco de dados
             $result = $conn->query($sql);
             $results = array();
-
             if ($result){
                 //percorre o resultado da consulta retornando um objeto
                 while ($row = $result->fetchObject($this->activeRecord)) {
@@ -60,13 +58,13 @@ final class Repository{
         }
     }
 
-    function delete(Criteria $criteria){
+    function delete(Criteria $criteria)
+    {
         $expression = $criteria->dump();
         $sql = "DELETE FROM " . constant($this->activeRecord.'::TABLENAME');
         if($expression){
             $sql .= ' WHERE ' . $expression;
         }
-
         //obtem transação ativa
         if($conn = Transaction::get()){
             Transaction::log($sql); // registra mensagem de log
@@ -78,7 +76,8 @@ final class Repository{
         }
     }
 
-    function count(Criteria $criteria){
+    function count(Criteria $criteria)
+    {
         $expression = $criteria->dump();
         $sql = "SELECT COUNT(*) FROM " . constant($this->activeRecord.'::TABLENAME');
         if($expression){

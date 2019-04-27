@@ -9,10 +9,11 @@ use Livro\Widgets\Container\Card;
 class FormWrapper
 {
     private $decorated;
-
-    public function __construct(Form $form)
+    private $layout;
+    public function __construct(Form $form, $layout = null)
     {
         $this->decorated = $form;
+        $this->layout = $layout;
     }
 
     public function __call($method, $parameters)
@@ -23,25 +24,26 @@ class FormWrapper
     public function show()
     {
         $element = new Element('form');
-        $element->class = "form-horizontal";
+        //$element->class = "form-horizontal";
         $element->enctype = "multipart/form-data";
         $element->method = 'post';
         $element->name = $this->decorated->getName();
 
-        foreach ($this->decorated->getFields() as $field) {
-
+        foreach ($this->decorated->getFields() as $field){
+            
             $group = new Element('div');
-            $group->class = 'form-group row';
-
-            $label = new Element('label');
-            $label->for = $field->id;
-            $label->class = 'col-sm-2 col-form-label';//label ocupando duas colunas
-            $label->add($field->getLabel());
-
-            $group->add($label);
+            $group->class = ($this->layout == 'row') ? 'form-group row' : 'form-group' ;//*
+            
+            if(NUll != $field->getLabel()){
+                $label = new Element('label');
+                $label->for = $field->id;
+                $label->class = ($this->layout == 'row') ? 'col-sm-2 col-form-label' : '' ;//label ocupando duas colunas*
+                $label->add($field->getLabel());
+                $group->add($label);
+            }            
 
             $col = new Element('div');
-            $col->class = 'col-sm-10';//field ocupando dez colunas
+            $col->class = ($this->layout == 'row') ? 'col-sm-10' : '' ;//field ocupando dez colunas*
             $col->add($field);
 
             $field->class = 'form-control';

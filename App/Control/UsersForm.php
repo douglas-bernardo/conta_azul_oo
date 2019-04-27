@@ -5,6 +5,7 @@ use Livro\Control\Action;
 use Livro\Widgets\Container\Row;
 use Livro\Widgets\Form\Form;
 use Livro\Widgets\Form\Entry;
+use Livro\Widgets\Form\Hidden;
 use Livro\Widgets\Form\Combo;
 use Livro\Widgets\Dialog\Modal;
 use Livro\Widgets\Dialog\Message;
@@ -24,16 +25,19 @@ class UsersForm extends Page
         $this->form->setFormTitle('Cadastro de Usuários');
 
         //cria os campos do formulário
-        $user_email = new Entry('email');
+        $id             = new Hidden('id');
+        $user_email     = new Entry('email');
         $user_email->id = 'email';
-        $user_pass = new Entry('password');
-        $user_pass->id = 'password';
-        $permission = new Combo('id_group');
+        $user_pass      = new Entry('password');
+        $user_pass->id  = 'password';
+        $permission     = new Combo('id_group');
 
-
+        $this->form->addField('Id', $id, '10%');
         $this->form->addField('Email', $user_email);
         $this->form->addField('Senha', $user_pass );
         $this->form->addField('Grupo de Permissões', $permission);
+
+        $id->setEditable(FALSE);
 
         $permission->addItems(array('1'=>'Desenvolvedores', 
                                     '2'=>'Novo Grupo Teste'));
@@ -60,23 +64,17 @@ class UsersForm extends Page
 
     public function onSave()
     {
-        try {
-
-            
+        try {            
             Transaction::open('contaazul');
-
             //obtem os dados
             $dados = $this->form->getData();
-
             //validação
             if(empty($dados->email)){
                 throw new Exception("Email vazio");
             }
-
             $user = new Users;//classe Users carregada no index pelo autoload
             $user->fromArray( (array) $dados);
             $user->store();
-
             Transaction::close();            
             header("Location: index.php?class=UsersList&method=confirm");
 
@@ -89,14 +87,11 @@ class UsersForm extends Page
     {
         try {
             Transaction::open('contaazul');
-
             $id = $param['id'];
-
             $user = Users::find($id);
             if ($user) {
                 $this->form->setData($user);
             }
-
             Transaction::close();
 
         } catch (Exception $e) {

@@ -3,10 +3,11 @@ body{
 }
 
 .wrapper{
-    margin: 80px;
+    margin: 100px auto;
+    max-width: 350px;
 }
 
-.form-signin{
+/* .form-signin{
     max-width: 380px;
     margin: 0 auto;
     background-color: #FFF;
@@ -25,4 +26,4 @@ body{
 
 .form-signin .form-control{
     padding: 15px;
-}
+} */

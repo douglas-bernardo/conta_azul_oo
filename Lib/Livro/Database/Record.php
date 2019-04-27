@@ -1,21 +1,16 @@
 <?php
-
 namespace Livro\Database;
 
 use Exception;
 
 abstract class Record
-{
-    
+{    
     protected $data; //array contendo os dados do obj
-
     public function __construct($id = NULL)
     {
-        if($id){//se o ID for informado
-            //carrega o OBJ correspondente
+        if($id){//se o ID for informado carrega o OBJ correspondente
             $object = $this->load($id);
-            if($object)
-            {
+            if($object){
                 $this->fromArray($object->toArray());
             }
         }
@@ -80,7 +75,6 @@ abstract class Record
     public function store()
     {
         $prepare = $this->prepare($this->data);
-
         //verifica se tem ID ou se existe no banco de dados
         if(empty($this->data['id']) or (!$this->load($this->id))){
             //incrementa o ID
@@ -104,7 +98,6 @@ abstract class Record
                     }
                 }
             }
-
             $sql .= ' SET ' . implode(', ', $set);
             $sql .= ' WHERE id=' . (int) $this->data['id']; //(int), (integer) - converte para inteiro
         }
@@ -124,20 +117,17 @@ abstract class Record
         $sql = "SELECT * FROM {$this->getEntity()}";
         $sql .= ' WHERE id=' . (int) $id;
         //obtém a transação ativa
-        if ($conn = Transaction::get()) {
+        if ($conn = Transaction::get()){
             //cria msg de log e executa a consulta
             Transaction::log($sql);
             $result = $conn->query($sql);
-
             //se retornou algum dado:
             if ($result){
                 $object = $result->fetchObject(get_class($this));
             }
             return $object;
-
         } else {
-            throw new Exception("Não há transação ativa!");
-            
+            throw new Exception("Não há transação ativa!");            
         }
     }
 
@@ -145,11 +135,9 @@ abstract class Record
     {
         //o ID é o paramentro ou a propriedade ID
         $id = $id ? $id : $this->id;
-
         //monta a string de DELETE
         $sql = "DELETE FROM {$this->getEntity()}";
         $sql .= ' WHERE id=' . (int) $this->data['id'];
-
         //obtém a transação ativa
         if ($conn = Transaction::get()) {
             //faz o log e executa o SQL
@@ -157,8 +145,7 @@ abstract class Record
             $result = $conn->exec($sql);
             return $result; //retorna o resultado
         } else {
-            throw new Exception("Não há transação ativa!");
-            
+            throw new Exception("Não há transação ativa!");            
         }
     }
 
@@ -169,9 +156,6 @@ abstract class Record
         return $ar->load($id);
     }
 
-    /**
-     * Retorna todos objetos
-     */
     public static function all()
     {
         $classname = get_called_class();
@@ -179,22 +163,18 @@ abstract class Record
         return $rep->load(new Criteria);
     }
 
-
     private function getLast()
     {
         if ($conn = Transaction::get()) {
             $sql = "SELECT max(id) FROM {$this->getEntity()}";
-
             //cria log e executa instrução SQL
             Transaction::log($sql);
-            $result = $conn->query($sql);
-            
+            $result = $conn->query($sql);            
             //retorna os dados do banco (no caso o id)
             $row = $result->fetch();
             return $row[0];
         } else {
-            throw new Exception("Não há transação ativa!");
-            
+            throw new Exception("Não há transação ativa!");            
         }
     }
 
@@ -230,5 +210,4 @@ abstract class Record
             return "NULL";
         }
     }
-
 }

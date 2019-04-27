@@ -48,7 +48,11 @@ class Form extends Element
     public function addField($label, FormElementInterface $object, $size = '100%')
     {
         $object->setSize($size);
-        $object->setLabel($label);
+        if ($object instanceof Hidden){
+            $object->setLabel(NULL);    
+        }else{
+            $object->setLabel($label);
+        }
         $this->fields[$object->getName()] = $object;
     }
 
