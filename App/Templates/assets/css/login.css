@@ -7,23 +7,15 @@ body{
     max-width: 350px;
 }
 
-/* .form-signin{
-    max-width: 380px;
-    margin: 0 auto;
-    background-color: #FFF;
-    padding: 15px 40px 50px;
-    border: 1px solid #e5e5e5;
-    border-radius: 10px;
+
+.AlertLogin{
+    position: absolute;
+    margin-top: 325px;
+    margin-left: -175px;
+    left: 50%;
+    max-width: 350px;
 }
 
-.form-signin .form-signin-heading, .form-signin .checkbox{
-    margin-bottom: 30px;
+.buttonLogin{
+    width: 100%;
 }
-
-.form-signin input[type="email"], .form-signin input[type="password"]{
-    margin-bottom: 20px;
-}
-
-.form-signin .form-control{
-    padding: 15px;
-} */

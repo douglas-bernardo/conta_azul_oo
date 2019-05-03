@@ -108,6 +108,10 @@ class Datagrid extends Table
 
                 //cria um link
                 $link = new Element('a');
+                //teste
+                $link->data_toggle = "modal";
+                $link->data_target = "#exampleModal";
+                //fim teste
                 $link->href = "{$url}&key={$key}&{$field}={$key}";
 
                 //verifica se o link será com imagem ou com texto

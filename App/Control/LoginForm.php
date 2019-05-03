@@ -24,13 +24,13 @@ class LoginForm extends Page
         $div = new Element('div');
         $div->class = 'wrapper';
 
-        $this->form = new FormWrapper(new Form('form_login'));
+        $this->form = new FormWrapper(new Form('form_login'), null, 'buttonLogin');
         $this->form->setFormTitle('Faça Seu Login');
 
         $email = new Entry('email');
         $email->id = 'email';
 
-        $pass = new Entry('password');
+        $pass = new Password('password');
         $pass->id = 'password';
 
         $this->form->addField('Email', $email);
@@ -68,13 +68,15 @@ class LoginForm extends Page
                     Transaction::close();
                     header("Location: index.php");
                 } else {
-                    new Message('error', "Usuário não encontrado :(");
+                    new Message('danger', "Usuário não encontrado :(", 'login.php', '100', 'AlertLogin');
                 }
 
             } catch (Exception $e) {
-                new Message('error', $e->getMessage());
+                new Message('danger', $e->getMessage());
             }
 
+        } else {
+            new Message('warning ', "Informe seu usuário e senha...", 'login.php', '100', 'AlertLogin');
         }
     }
 

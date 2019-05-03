@@ -46,20 +46,6 @@ class UsersForm extends Page
         $this->form->addAction('Limpar', new Action(array($this, 'onClear')));
 
         parent::add($this->form);
-
-        // $btn = new Element('button');
-        // $btn->type = "button";
-        // $btn->class = "btn btn-danger";
-        // $btn->data_toggle = "modal";
-        // $btn->data_target = "#exampleModal";
-        // $btn->add("Excluir");
-        // parent::add($btn);
-        // // modal
-        // $action_yes = new Action(array($this, 'onDelete'));
-        // $modal = new Modal("Excluir Registro", "exampleModal", $action_yes);
-        // $modal->add('Tem certeza que deseja escluir o registro?');
-        // parent::add($modal);
-
     }
 
     public function onSave()

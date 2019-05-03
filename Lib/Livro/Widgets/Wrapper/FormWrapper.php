@@ -10,10 +10,13 @@ class FormWrapper
 {
     private $decorated;
     private $layout;
-    public function __construct(Form $form, $layout = null)
+    private $btnCssClass;
+
+    public function __construct(Form $form, $layout = null, $btnCssClass = '')
     {
         $this->decorated = $form;
         $this->layout = $layout;
+        $this->btnCssClass = $btnCssClass;
     }
 
     public function __call($method, $parameters)
@@ -57,7 +60,8 @@ class FormWrapper
         $group->class = 'form-group row mb-0';
 
         $col = new Element('div');
-        $col->class = 'col-sm-10';
+        //$col->class = 'col-sm-10';
+        $col->class = 'col';
 
             $i = 0;
             foreach ($this->decorated->getActions() as $label => $action)
@@ -66,7 +70,7 @@ class FormWrapper
                 $button = new Button($name);
                 $button->setFormName($this->decorated->getName());
                 $button->setAction($action, $label);
-                $button->class = 'btn ' . ( ($i==0) ? 'btn-primary' : 'btn-secondary');
+                $button->class = "{$this->btnCssClass} btn " . ( ($i==0) ? 'btn-primary' : 'btn-secondary');
                 $col->add($button);
                 $i++;
             }

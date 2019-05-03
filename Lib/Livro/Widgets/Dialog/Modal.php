@@ -96,8 +96,9 @@ class Modal extends Element
         parent::add($this->dialog);
 
     }
-
-    public function add($message){
+    
+    public function add($message)
+    {
         $this->body->add($message);
     }
 }

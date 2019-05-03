@@ -7,6 +7,7 @@ use Livro\Widgets\Datagrid\DatagridColumn;
 use Livro\Widgets\Datagrid\DatagridAction;
 use Livro\Widgets\Dialog\Message;
 use Livro\Widgets\Dialog\Question;
+use Livro\Widgets\Dialog\Modal;
 use Livro\Widgets\Wrapper\DatagridWrapper;
 use Livro\Database\Transaction;
 use Livro\Database\Repository;
@@ -58,6 +59,20 @@ class UsersList extends Page
 
         //adiciona a Datagrid a página
         parent::add($this->datagrid);
+
+        $btn = new Element('button');
+        $btn->type = "button";
+        $btn->class = "btn btn-danger";
+        $btn->data_toggle = "modal";
+        $btn->data_target = "#exampleModal";
+        $btn->add("Excluir");
+        parent::add($btn);
+        // modal
+        $action_yes = new Action(array($this, 'onDelete'));
+        $modal = new Modal("Excluir Registro", "exampleModal", $action_yes);
+        $modal->add('Tem certeza que deseja escluir o registro?');
+        parent::add($modal);
+
     }
 
     public function onReload()
@@ -89,7 +104,7 @@ class UsersList extends Page
 
     public function confirm()
     {
-        new Message('info', "Registro salvo com sucesso!", "index.php?class=UsersList");
+        new Message('success', "Registro salvo com sucesso!", "index.php?class=UsersList");
     }
 
     public function onDelete($param)
@@ -111,11 +126,11 @@ class UsersList extends Page
             $user->delete(); // deleta objeto do banco de dados
             Transaction::close(); // finaliza a transação
             $this->onReload(); // recarrega a datagrid
-            new Message('info', "Registro excluído com sucesso", "index.php?class=UsersList");
+            new Message('success', "Registro excluído com sucesso", "index.php?class=UsersList");
         }
         catch (Exception $e)
         {
-            new Message('error', $e->getMessage());
+            new Message('warning', $e->getMessage());
         }
     }
 

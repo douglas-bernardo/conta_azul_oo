@@ -7,7 +7,7 @@ class Password extends Field implements FormElementInterface {
         $this->tag->name = $this->name; //nome da tag
         $this->tag->value = $this->value; //value da tag
         $this->tag->type = 'password'; //tipo de input
-        $this->tag->style = "width:{$this->size}px";//tamanho em pixels
+        $this->tag->style = "width:{$this->size}";//tamanho em pixels
         if (!parent::getEditable()){
             $this->tag->readonly = "1";
         }
