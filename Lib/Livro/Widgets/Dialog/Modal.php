@@ -12,7 +12,8 @@ class Modal extends Element
     private $body;
     private $footer;
     // Action $action_yes, Action $action_no = NULL
-    public function __construct($title, $target_id, Action $action_yes, Action $action_no = NULL){
+    public function __construct($title, $target_id, Action $action_yes = NULL, Action $action_no = NULL)
+    {
         parent::__construct('div');
 
         // principal
@@ -66,22 +67,25 @@ class Modal extends Element
         $this->footer->class = 'modal-footer';
 
         //buttons
-        $url_yes = $action_yes->serialize();
-        $link_yes = new Element('button');
-        $link_yes->data_url = "'index.php'" . $url_yes;
-        $link_yes->type = 'button';
-        $link_yes->id = "btn_yes";
-        $link_yes->class = 'btn btn-primary';
-        $link_yes->data_dismiss = "modal";
-        $link_yes->add('Sim');
+        if ($action_yes) {
+            $url_yes = $action_yes->serialize();
+            $link_yes = new Element('button');
+            $link_yes->data_url = "'index.php'" . $url_yes;
+            $link_yes->type = 'button';
+            $link_yes->id = "btn_yes";
+            $link_yes->class = 'btn btn-primary';
+            $link_yes->data_dismiss = "modal";
+            $link_yes->add('Sim');
+        }
 
+        //melhorar aqui
         $link_no = new Element('button');
         $link_no->type = 'button';
         $link_no->class = 'btn btn-secondary';
+        $link_no->data_dismiss = "modal";
         $link_no->add('Não');
 
         // add buttons on footer
-        $this->footer->add($link_yes);
         $this->footer->add($link_no);
 
         //monta o conteudo

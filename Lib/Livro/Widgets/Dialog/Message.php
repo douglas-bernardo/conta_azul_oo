@@ -15,11 +15,11 @@ class Message
         $button->class = 'close';
         $button->data_dismiss = "alert";
         $button->area_label = "Close";
-        $span = new Element('span');
-        $span->id = 'message-button';
         if ($location){
-            $span->data_url = $location;
+            $button->data_url = $location;
+            $button->id = 'message-button';
         }
+        $span = new Element('span');
         $span->aria_hidden = "true";
         $span->add('&times;');
         $button->add($span);

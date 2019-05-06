@@ -1,19 +1,23 @@
 <?php
 namespace Livro\Control;
 
-class Action implements ActionInterface{
+class Action implements ActionInterface
+{
     private $action;
     private $param;
     
-    public function __construct(Callable $action){
+    public function __construct(Callable $action)
+    {
         $this->action = $action;
     }
 
-    public function setParameter($param, $value){
+    public function setParameter($param, $value)
+    {
         $this->param[$param] = $value;
     }
 
-    public function serialize(){
+    public function serialize()
+    {
         //verifica se a ação é um método:
         if(is_array($this->action)){
             //obtém o nome da classe

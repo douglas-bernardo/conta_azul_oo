@@ -29,7 +29,6 @@ class Question {
             $link_no->add('Não');
             $message .= $link_no;
         }
-
         $div->add($message);
         $div->show();
     }

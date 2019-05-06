@@ -5,6 +5,7 @@ use Livro\Widgets\Base\Element;
 use Livro\Widgets\Datagrid\Datagrid;
 use Livro\Widgets\Datagrid\DatagridColumn;
 use Livro\Widgets\Datagrid\DatagridAction;
+use Livro\Widgets\Datagrid\DatagridAjax;
 use Livro\Widgets\Dialog\Message;
 use Livro\Widgets\Dialog\Question;
 use Livro\Widgets\Dialog\Modal;
@@ -46,7 +47,8 @@ class UsersList extends Page
         $action1->setImage('ico_edit.png');
         $action1->setField('id');
 
-        $action2 = new DatagridAction(array($this, 'onDelete'));
+        //$action2 = new DatagridAction(array($this, 'onDelete'));
+        $action2 = new DatagridAjax('confirm');
         $action2->setLabel('Excluir');
         $action2->setImage('ico_delete.png');
         $action2->setField('id');
@@ -60,16 +62,8 @@ class UsersList extends Page
         //adiciona a Datagrid a página
         parent::add($this->datagrid);
 
-        $btn = new Element('button');
-        $btn->type = "button";
-        $btn->class = "btn btn-danger";
-        $btn->data_toggle = "modal";
-        $btn->data_target = "#exampleModal";
-        $btn->add("Excluir");
-        parent::add($btn);
         // modal
-        $action_yes = new Action(array($this, 'onDelete'));
-        $modal = new Modal("Excluir Registro", "exampleModal", $action_yes);
+        $modal = new Modal("Excluir Registro", "ModalConfirm");
         $modal->add('Tem certeza que deseja escluir o registro?');
         parent::add($modal);
 
@@ -102,9 +96,10 @@ class UsersList extends Page
         return strtoupper($value);
     }
 
-    public function confirm()
+    public function confirm($type)
     {
-        new Message('success', "Registro salvo com sucesso!", "index.php?class=UsersList");
+        $confirm_type = $type['type'];
+        new Message('success', "Registro {$confirm_type} com sucesso!", "index.php?class=UsersList");
     }
 
     public function onDelete($param)

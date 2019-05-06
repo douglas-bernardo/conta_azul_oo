@@ -62,7 +62,7 @@ class UsersForm extends Page
             $user->fromArray( (array) $dados);
             $user->store();
             Transaction::close();            
-            header("Location: index.php?class=UsersList&method=confirm");
+            header("Location: index.php?class=UsersList&method=confirm&type=salvo");
 
         } catch (Exception $e) {
             new Message('error', "<b>Erro:</b> " . $e->getMessage());

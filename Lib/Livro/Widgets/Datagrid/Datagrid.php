@@ -1,6 +1,7 @@
 <?php
 namespace Livro\Widgets\Datagrid;
 
+use Livro\Control\Action;
 use Livro\Widgets\Container\Table;
 use Livro\Widgets\Container\TableRow;
 use Livro\Widgets\Base\Element;
@@ -15,7 +16,8 @@ class Datagrid extends Table
     {
         $this->columns[] = $object;
     }
-    public function addAction(DatagridAction $object)
+    //public function addAction(DatagridAction $object)
+    public function addAction($object)
     {
         $this->actions[] = $object;
     }
@@ -97,8 +99,10 @@ class Datagrid extends Table
         if($this->actions){
             //percorre as ações
             foreach($this->actions as $action){
-                //obtem as propriedades da ação
-                $url   = $action->serialize();
+                //teste
+                $link = new Element('a');
+
+                //obtem as propriedades da ação                
                 $label = $action->getLabel();
                 $image = $action->getImage();
                 $field = $action->getField();//nome do campo
@@ -106,13 +110,17 @@ class Datagrid extends Table
                 //obtem o valor do campo do objeto que será passado adiante
                 $key = $object->$field;
 
+                if ($action instanceof Action){
+                    $url = $action->serialize();
+                    $link->href = "{$url}&key={$key}&{$field}={$key}";
+                }else{
+                    $link->id = "ajaxDel";
+                    $link->onclick = "{$action->getFunction()}($key)";
+                }
+
                 //cria um link
-                $link = new Element('a');
-                //teste
-                $link->data_toggle = "modal";
-                $link->data_target = "#exampleModal";
-                //fim teste
-                $link->href = "{$url}&key={$key}&{$field}={$key}";
+                //$link = new Element('a');
+                //$link->href = "{$url}&key={$key}&{$field}={$key}";
 
                 //verifica se o link será com imagem ou com texto
                 if($image){
