@@ -3,12 +3,15 @@ namespace Livro\Widgets\Container;
 
 use Livro\Widgets\Base\Element;
 
-Class Table extends Element{
-    public function __construct(){
+Class Table extends Element
+{
+    public function __construct()
+    {
         parent::__construct('table');
     }
 
-    public function addRow(){
+    public function addRow()
+    {
         // instancia obj linha
         $row = new TableRow;//composição
         //armazena no array de linhas

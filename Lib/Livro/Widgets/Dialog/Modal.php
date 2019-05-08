@@ -21,8 +21,8 @@ class Modal extends Element
         $this->id = $target_id;
         $this->tabindex = '-1';
         $this->role = 'dialog';
-        $this->aria_labelledby = 'exampleModalLabel';
-        $this->aria_hidden = "true";
+        $this->{'aria-labelledby'} = 'exampleModalLabel';
+        $this->{'aria-hidden'} = "true";
 
         //dialog
         $this->dialog = new Element('div');
@@ -47,10 +47,10 @@ class Modal extends Element
         $button = new Element('button');
         $button->type = 'button';
         $button->class = 'close';
-        $button->data_dismiss = 'modal';
-        $button->aria_label = 'Close';
+        $button->{'data-dismiss'} = 'modal';
+        $button->{'aria-label'} = 'Close';
         $span = new Element('span');
-        $span->aria_hidden = 'true';
+        $span->{'aria-hidden'} = 'true';
         $span->add('&times;');
         $button->add($span);
 
@@ -70,11 +70,11 @@ class Modal extends Element
         if ($action_yes) {
             $url_yes = $action_yes->serialize();
             $link_yes = new Element('button');
-            $link_yes->data_url = "'index.php'" . $url_yes;
+            $link_yes->{'data-url'} = "'index.php'" . $url_yes;
             $link_yes->type = 'button';
             $link_yes->id = "btn_yes";
             $link_yes->class = 'btn btn-primary';
-            $link_yes->data_dismiss = "modal";
+            $link_yes->{'data-dismiss'} = "modal";
             $link_yes->add('Sim');
         }
 
@@ -82,7 +82,7 @@ class Modal extends Element
         $link_no = new Element('button');
         $link_no->type = 'button';
         $link_no->class = 'btn btn-secondary';
-        $link_no->data_dismiss = "modal";
+        $link_no->{'data-dismiss'} = "modal";
         $link_no->add('Não');
 
         // add buttons on footer

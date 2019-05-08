@@ -5,7 +5,8 @@ use Livro\Widgets\Base\Element;
 
 class Row extends Element
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct('div');
         $this->class = 'row';
     }
@@ -19,5 +20,4 @@ class Row extends Element
         //retorna o bj
         return $col;
     }
-
 }

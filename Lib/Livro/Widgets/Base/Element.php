@@ -9,13 +9,13 @@ class Element{
 
     public function __construct($name, $required = false)
     {
-        $this->tagname = $name;//define o nome do elemento.
+        $this->tagname = $name;//define o nome do elemento(tag).
         $this->required = $required;//define o nome do elemento.
     }
     
     public function __set($name, $value)
     {
-        $name = str_replace('_','-',$name);//adaptado paraas classes modal bootstrap usam hifen '-'
+        //$name = str_replace('_','-',$name);//adaptado para as classes modal bootstrap usam hifen '-'
         // armazena os valores atribuidos no array properties
         $this->properties[$name] = $value;
     }
