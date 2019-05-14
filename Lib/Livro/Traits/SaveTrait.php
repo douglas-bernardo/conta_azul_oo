@@ -5,9 +5,6 @@ use Livro\Database\Transaction;
 use Livro\Widgets\Dialog\Message;
 use Exception;
 
-/**
- * 
- */
 trait SaveTrait
 {
     function onSave()

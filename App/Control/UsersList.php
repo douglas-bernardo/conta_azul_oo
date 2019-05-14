@@ -1,4 +1,5 @@
 <?php
+
 use Livro\Control\Page;
 use Livro\Control\Action;
 use Livro\Widgets\Base\Element;
@@ -17,7 +18,8 @@ use Livro\Database\Criteria;
 class UsersList extends Page
 {
     private $datagrid;
-
+    private $loaded;
+    
     public function __construct()
     {
         parent::__construct();
@@ -64,7 +66,7 @@ class UsersList extends Page
 
         // modal
         $modal = new Modal("Excluir Registro", "ModalConfirm");
-        $modal->add('Tem certeza que deseja escluir o registro?');
+        $modal->add('Tem certeza que deseja excluir o registro?');
         parent::add($modal);
 
     }
@@ -131,7 +133,6 @@ class UsersList extends Page
 
     function show()
     {
-        //se a listagem ainda não foi carregada
         if(!$this->loaded){
             $this->onReload();
         }

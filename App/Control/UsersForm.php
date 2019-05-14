@@ -46,6 +46,7 @@ class UsersForm extends Page
         $this->form->addAction('Limpar', new Action(array($this, 'onClear')));
 
         parent::add($this->form);
+        
     }
 
     public function onSave()

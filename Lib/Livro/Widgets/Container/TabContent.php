@@ -20,12 +20,7 @@ class TabContent extends Element
         $div->id = "{$this->tabItem->$labelItem}";
         $div->role = 'tabpanel';
         $div->{'aria-labelledby'} = "{$this->tabItem->$labelItem}-tab";
-
-        $container = new Element('div');
-        $container->class = 'container';
-        $container->add($content);
-
-        $div->add($container);
+        $div->add($content);
         parent::add($div);
     }
 }

@@ -7,6 +7,10 @@
     text-align: center;
 }
 
+.company_name a {
+    color: #FFF;
+}
+
 /* Sidebar */   
 #sidebar-wrapper{
     z-index: 1;
