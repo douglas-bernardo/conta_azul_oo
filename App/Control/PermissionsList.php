@@ -8,7 +8,9 @@ use Livro\Widgets\Container\TabContent;
 use Livro\Widgets\Datagrid\Datagrid;
 use Livro\Widgets\Datagrid\DatagridColumn;
 use Livro\Widgets\Datagrid\DatagridAction;
+use Livro\Widgets\Datagrid\DatagridAjax;
 use Livro\Widgets\Dialog\Message;
+use Livro\Widgets\Dialog\Modal;
 use Livro\Widgets\Wrapper\DatagridWrapper;
 use Livro\Database\Transaction;
 use Livro\Database\Repository;
@@ -43,12 +45,13 @@ class PermissionsList extends Page
         $this->datagrid_permissions->addColumn($nome);
 
         //ações das permissões:
-        $datagrid_permission_act1 = new DatagridAction(array($this, 'onEdit'));
+        $datagrid_permission_act1 = new DatagridAction(array(new PermissionForm, 'onEdit'));
         $datagrid_permission_act1->setLabel('Editar');
         $datagrid_permission_act1->setImage('ico_edit.png');
         $datagrid_permission_act1->setField('id');
 
-        $datagrid_permission_act2 = new DatagridAction(array($this, 'onDelete'));
+        //$datagrid_permission_act2 = new DatagridAction(array($this, 'onDelete'));
+        $datagrid_permission_act2 = new DatagridAjax('confirm', 'index.php?class=PermissionsList&method=');
         $datagrid_permission_act2->setLabel('Excluir');
         $datagrid_permission_act2->setImage('ico_delete.png');
         $datagrid_permission_act2->setField('id');
@@ -80,6 +83,10 @@ class PermissionsList extends Page
         parent::add($tab);
         parent::add($tabContent);
 
+        // modal
+        $modal = new Modal("Excluir Registro", "ModalConfirm");
+        $modal->add('Tem certeza que deseja excluir o registro?');
+        parent::add($modal);
     }
 
     public function onReload()
@@ -87,14 +94,11 @@ class PermissionsList extends Page
         try {
             Transaction::open('contaazul');
             $repository = new Repository('Permissions');
-
-            //cria um critério de selecção
+            //cria um critério de seleção
             $criteria = new Criteria;
             $criteria->setProperty('order', 'id');
-
             $permissions = $repository->load($criteria);
             $this->datagrid_permissions->clear();
-
             if($permissions){
                 foreach ($permissions as $permission) {
                     $this->datagrid_permissions->addItem($permission);
@@ -107,14 +111,24 @@ class PermissionsList extends Page
         }
     }
 
-    function onEdit()
+    public function Delete($param)
     {
-
+        try {
+            $id = $param['id']; // obtém a chave
+            Transaction::open('contaazul'); // inicia transação com o banco 'livro'
+            $permission = Permissions::find($id);
+            $permission->delete(); // deleta objeto do banco de dados
+            Transaction::close(); // finaliza a transação
+            $this->onReload(); // recarrega a datagrid
+        } catch (Exception $e) {
+            new Message('warning', $e->getMessage());
+        }
     }
 
-    function onDelete()
+    public function confirm($type)
     {
-
+        $confirm_type = $type['type'];
+        new Message('success', "Registro {$confirm_type} com sucesso!", "index.php?class=PermissionsList");
     }
 
     function show()

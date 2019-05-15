@@ -6,9 +6,7 @@ use Livro\Database\Repository;
 use Livro\Database\Criteria;
 use Livro\Widgets\Dialog\Message;
 use Exception;
-/**
- * 
- */
+
 trait ReloadTrait
 {
     function onReload()
@@ -16,8 +14,7 @@ trait ReloadTrait
         try{
             Transaction::open($this->connection);               //abre a transação
             $repository = new Repository($this->activeRecord);  //cria um repositório
-            //cria um critério de seleção de dados
-            $criteria = new Criteria;
+            $criteria = new Criteria;                           //cria um critério de seleção de dados
             $criteria->setProperty('order', 'id');
             //verifica se há filtro
             if(isset($this->filter)){

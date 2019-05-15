@@ -16,12 +16,15 @@ trait SaveTrait
             $object = new $class;                //instancia o objeto
             $object->fromArray((array) $dados);  //carrega os dados
             $object->store();                    //armazena o objeto
-
             Transaction::close();
-            new Message('info', 'Dados armazenados com sucesso');
+            if ($this->url_save_return) {
+                header("Location: {$this->url_save_return}");
+            } else {
+                new Message('success', 'Dados armazenados com sucesso');
+            }
         }
         catch(Exception $e){
-            new Message('error', $e->getMessage());
+            new Message('warning', "<b>Erro:</b> " . $e->getMessage());
         }
     }
 }

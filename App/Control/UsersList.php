@@ -24,10 +24,11 @@ class UsersList extends Page
     {
         parent::__construct();
 
+        $act_new_user = new Action(array(new UsersForm, 'onEdit'));
         $btn = new Element('a');
         $btn->class = "btn btn-primary mb-3";
-        $btn->href = 'index.php?class=UsersForm';
-        $btn->add("Novo");
+        $btn->href = $act_new_user->serialize();
+        $btn->add('Novo Usuário');
         parent::add($btn);
 
         //instancia o obj Datagrid
@@ -49,8 +50,7 @@ class UsersList extends Page
         $action1->setImage('ico_edit.png');
         $action1->setField('id');
 
-        //$action2 = new DatagridAction(array($this, 'onDelete'));
-        $action2 = new DatagridAjax('confirm');
+        $action2 = new DatagridAjax('confirm', 'index.php?class=UsersList&method=');
         $action2->setLabel('Excluir');
         $action2->setImage('ico_delete.png');
         $action2->setField('id');
@@ -104,29 +104,16 @@ class UsersList extends Page
         new Message('success', "Registro {$confirm_type} com sucesso!", "index.php?class=UsersList");
     }
 
-    public function onDelete($param)
-    {
-        $id = $param['id']; // obtém o parâmetro $id
-        $action1 = new Action(array($this, 'Delete'));
-        $action1->setParameter('id', $id);
-        $action2 = new Action(array($this, 'onReload'));
-        new Question('Deseja realmente excluir o registro?', $action1, $action2);
-    }
-
     public function Delete($param)
     {
-        try
-        {
+        try {
             $id = $param['id']; // obtém a chave
             Transaction::open('contaazul'); // inicia transação com o banco 'livro'
             $user = Users::find($id);
             $user->delete(); // deleta objeto do banco de dados
             Transaction::close(); // finaliza a transação
             $this->onReload(); // recarrega a datagrid
-            new Message('success', "Registro excluído com sucesso", "index.php?class=UsersList");
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             new Message('warning', $e->getMessage());
         }
     }

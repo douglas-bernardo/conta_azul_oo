@@ -10,12 +10,26 @@ use Livro\Widgets\Base\Element;
 use Livro\Widgets\Wrapper\FormWrapper;
 use Livro\Database\Transaction;
 
+use Livro\Traits\SaveTrait;
+use Livro\Traits\EditTrait;
+
 class PermissionForm extends Page
 {
     private $form;
+    private $connection;
+    private $activeRecord;
+    private $url_save_return;
+
+    use SaveTrait;
+    use EditTrait;
+
     public function __construct()
     {
         parent::__construct();
+
+        $this->connection = 'contaazul';
+        $this->activeRecord = 'Permissions';
+        $this->url_save_return = 'index.php?class=PermissionsList&method=confirm&type=salvo';
         
         $this->form = new FormWrapper(new Form('permissions_form'));
         $this->form->setFormTitle('Cadastro de Permissões do Sistema');
@@ -37,15 +51,41 @@ class PermissionForm extends Page
 
     public function onSave()
     {
-        
+        try {            
+            Transaction::open('contaazul');
+            //obtem os dados
+            $dados = $this->form->getData();
+            //validação
+            if(empty($dados->name)){
+                throw new Exception("Nome vazio");
+            }
+            $permission = new Permissions;
+            $permission->fromArray( (array) $dados);
+            $permission->id_company = 1;
+            $permission->store();
+            Transaction::close();            
+            header("Location: index.php?class=PermissionsList&method=confirm&type=salvo");
+        } catch (Exception $e) {
+            new Message('warning', "<b>Erro:</b> " . $e->getMessage());
+        }
     }
 
-    public function onClear(Type $var = null)
+    public function onEdit($param)
     {
-        
+        try {
+            if(isset($param['id'])){
+                $permission_id = $param['id'];
+                Transaction::open('contaazul');                
+                $permission = Permissions::find($permission_id);
+                $this->form->setData($permission);
+                Transaction::close();
+            }
+        } catch (Exception $e) {
+            new Message('warning', "<b>Error: </b>" . $e->getMessage());
+        }
     }
 
-    public function onEdit()
+    public function onClear()
     {
         
     }

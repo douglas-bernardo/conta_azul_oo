@@ -12,24 +12,24 @@ $(function(){
 
 })
 
-function confirm(param) {
-    $('#ModalConfirm').find('.modal-body').html('<strong>Tem certeza que deseja excluir o usuário?</strong>');
+function confirm(param, url_return) {
+    $('#ModalConfirm').find('.modal-body').html('<strong>Tem certeza que deseja excluir o registro?</strong>');
     if($('#ModalConfirm').find('#btn_yes').length == false){
-        $('#ModalConfirm').find('.modal-footer').prepend('<button id="btn_yes" type="button" class="btn btn-primary" onclick="del(' + param + ')">Sim</button>')
+        $('#ModalConfirm').find('.modal-footer').prepend('<button id="btn_yes" type="button" class="btn btn-primary" onclick="del(' + param + ', ' + "'" + url_return + "'" + ')">Sim</button>')
     }    
     $('#ModalConfirm').modal('show');
     
 }
 
-function del(id){
+function del(id, url_return){
 
     $.ajax({
-        url:'index.php?class=UsersList&method=Delete',
+        url: url_return + 'Delete',
         type:'GET',
         data:{id:id},
         success:function () {
             $('#ModalConfirm').modal('hide');
-            window.location.href = 'index.php?class=UsersList&method=confirm&type=excluído';
+            window.location.href = url_return + 'confirm&type=excluído';
         }
     });
 }
