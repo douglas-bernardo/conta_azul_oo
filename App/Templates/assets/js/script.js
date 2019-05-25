@@ -12,24 +12,23 @@ $(function(){
 
 })
 
-function confirm(param, url_return) {
+function confirm(param, url, activeRecord) {
     $('#ModalConfirm').find('.modal-body').html('<strong>Tem certeza que deseja excluir o registro?</strong>');
     if($('#ModalConfirm').find('#btn_yes').length == false){
-        $('#ModalConfirm').find('.modal-footer').prepend('<button id="btn_yes" type="button" class="btn btn-primary" onclick="del(' + param + ', ' + "'" + url_return + "'" + ')">Sim</button>')
+        $('#ModalConfirm').find('.modal-footer').prepend('<button id="btn_yes" type="button" class="btn btn-primary" onclick="del(' + param + ', ' + "'" + url + "'" + ', ' + "'" + activeRecord + "'" + ')">Sim</button>')
     }    
     $('#ModalConfirm').modal('show');
     
 }
 
-function del(id, url_return){
-
+function del(id, url, activeRecord){
     $.ajax({
-        url: url_return + 'Delete',
+        url: url,
         type:'GET',
-        data:{id:id},
+        data:{id:id, activeRecord:activeRecord},
         success:function () {
             $('#ModalConfirm').modal('hide');
-            window.location.href = url_return + 'confirm&type=excluído';
+            window.location.href = window.location.href;
         }
     });
 }

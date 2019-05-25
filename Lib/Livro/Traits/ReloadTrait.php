@@ -32,7 +32,7 @@ trait ReloadTrait
             Transaction::close();
         }
         catch(Exception $e){
-            new Message($e->getMessage());
+            new Message('warning', $e->getMessage());
         }
     }
 }

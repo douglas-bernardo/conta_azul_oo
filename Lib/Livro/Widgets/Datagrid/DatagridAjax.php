@@ -6,15 +6,17 @@ use Livro\Control\Action;
 class DatagridAjax
 {
     private $function;
-    private $url_return;
+    private $url;
+    private $activeRecord;
     private $image;
     private $label;
     private $field;
 
-    public function __construct($function, $url_return) 
+    public function __construct($function, $url, $activeRecord)
     {
         $this->function = $function;
-        $this->url_return = $url_return;
+        $this->url = $url;
+        $this->activeRecord = $activeRecord;
     }
 
     public function getFunction()
@@ -22,9 +24,14 @@ class DatagridAjax
         return $this->function;
     }
 
-    public function getUrlReturn()
+    public function getUrl()
     {
-        return $this->url_return;
+        return $this->url;
+    }
+
+    public function getActiveRecord()
+    {
+        return $this->activeRecord;
     }
 
     public function setImage($image)

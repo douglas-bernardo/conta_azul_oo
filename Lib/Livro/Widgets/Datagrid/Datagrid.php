@@ -115,7 +115,7 @@ class Datagrid extends Table
                     $link->href = "{$url}&key={$key}&{$field}={$key}";
                 }else{
                     $link->id = "ajaxDel";
-                    $link->onclick = "{$action->getFunction()}($key, '{$action->getUrlReturn()}')";
+                    $link->onclick = "{$action->getFunction()}($key, '{$action->getUrl()}', '{$action->getActiveRecord()}')";
                 }
 
                 //verifica se o link será com imagem ou com texto

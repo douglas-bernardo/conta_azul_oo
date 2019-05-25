@@ -28,8 +28,7 @@ class Action implements ActionInterface
             if($this->param){
                 $url = array_merge($url, $this->param);
             }
-            //monta a url
-            return '?' . http_build_query($url);
+            return '?' . http_build_query($url);//monta a url
         }
     }
 }
