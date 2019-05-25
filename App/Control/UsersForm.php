@@ -31,7 +31,7 @@ class UsersForm extends Page
 
         $this->connection   = 'contaazul';
         $this->activeRecord = 'Users';
-        $this->url_save_return = 'index.php?class=UsersList&method=confirm&type=salvo';
+        $this->url_save_return = 'index.php?class=UsersList&method=confirm&type=salvo&activeRecord=UsersList';
         
         //instancia de um formulário
         $this->form = new FormWrapper(new Form('form_users'));
@@ -77,21 +77,6 @@ class UsersForm extends Page
 
         parent::add($this->form);
         
-    }
-
-    public function onEdit($param)
-    {
-        try {
-            if (isset($param['id'])) {            
-            $id = $param['id'];
-            Transaction::open('contaazul');
-            $user = Users::find($id);
-            $this->form->setData($user);
-            Transaction::close();
-            }
-        } catch (Exception $e) {
-            new Message('warning', "<b>Erro:</b> " . $e->getMessage());
-        }
     }
 
     public function onClear()

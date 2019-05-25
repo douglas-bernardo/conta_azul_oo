@@ -15,24 +15,39 @@ use Livro\Database\Transaction;
 use Livro\Database\Repository;
 use Livro\Database\Criteria;
 
+use Livro\Traits\DeleteTrait;
+use Livro\Traits\ReloadTraitTeste;
+use Livro\Traits\ConfirmTrait;
+
 class UsersList extends Page
 {
-    private $datagrid;
     private $loaded;
-    
+    private $filter;
+    private $connection;
+    private $activeRecord;
+
+    use DeleteTrait;
+    use ConfirmTrait;
+    use ReloadTraitTeste{
+        onReload as onReloadTrait;
+    }
+
     public function __construct()
     {
         parent::__construct();
 
-        $act_new_user = new Action(array(new UsersForm, 'onEdit'));
+        $this->connection = 'contaazul';
+
+        //ação para um novo usuário
+        $newUser = new Action(array(new UsersForm, 'onEdit'));
         $btn = new Element('a');
         $btn->class = "btn btn-primary mb-3";
-        $btn->href = $act_new_user->serialize();
+        $btn->href = $newUser->serialize();
         $btn->add('Novo Usuário');
         parent::add($btn);
 
         //instancia o obj Datagrid
-        $this->datagrid = new DatagridWrapper(new Datagrid);
+        $datagrid = new DatagridWrapper(new Datagrid);
 
         //instancia as colunas da Datagrid - Cabeçalho
         $id = new DatagridColumn('id', 'Id', 'center', 40);
@@ -40,9 +55,9 @@ class UsersList extends Page
         $grupo = new DatagridColumn('nome_grupo', 'Grupo Permissões', 'center', 200);
 
         //adiciona as colunas à Datagrid
-        $this->datagrid->addColumn($id);
-        $this->datagrid->addColumn($email);
-        $this->datagrid->addColumn($grupo);
+        $datagrid->addColumn($id);
+        $datagrid->addColumn($email);
+        $datagrid->addColumn($grupo);
 
         //instancia duas ações da datagrid
         $action1 = new DatagridAction(array(new UsersForm, 'onEdit'));
@@ -50,72 +65,41 @@ class UsersList extends Page
         $action1->setImage('ico_edit.png');
         $action1->setField('id');
 
-        $action2 = new DatagridAjax('confirm', 'index.php?class=UsersList&method=');
+        $actDelUser = new Action(array($this, 'Delete'));
+        $linkDelUser = $actDelUser->serialize();
+        $action2 = new DatagridAjax('confirm', $linkDelUser, 'Users');
         $action2->setLabel('Excluir');
         $action2->setImage('ico_delete.png');
         $action2->setField('id');
 
-        $this->datagrid->addAction($action1);
-        $this->datagrid->addAction($action2);
+        $datagrid->addAction($action1);
+        $datagrid->addAction($action2);
 
         //cria o modelo da Datagrid montando sua estrutura (cabeçalho)
-        $this->datagrid->createModel();
+        $datagrid->createModel();
 
         //adiciona a Datagrid a página
-        parent::add($this->datagrid);
+        parent::add($datagrid);
+
+        //armazena o activeRecord como chave no array activeRecord 
+        //e indexa ao mesmo, o datagrid criado
+        $this->activeRecord['Users'] = $datagrid;
 
         // modal
         $modal = new Modal("Excluir Registro", "ModalConfirm");
         $modal->add('Tem certeza que deseja excluir o registro?');
         parent::add($modal);
-
     }
 
     public function onReload()
     {
-        Transaction::open('contaazul');
-        $repository = new Repository('Users');
-
-        //cria um critério de seleção de dados
-        $criteria = new Criteria;
-        $criteria->setProperty('order', 'id');
-
-        //carrega os produtos que satisfazem o critério
-        $users = $repository->load($criteria);
-        $this->datagrid->clear();
-        if($users){
-            foreach ($users as $user) {
-                //adiciona cada objeto a datagrid
-                $this->datagrid->addItem($user);
-            }
-        }
-        Transaction::close();
+        $this->onReloadTrait();
         $this->loaded = true;
     }
 
     public function converterParaMaiusculo($value)
     {
         return strtoupper($value);
-    }
-
-    public function confirm($type)
-    {
-        $confirm_type = $type['type'];
-        new Message('success', "Registro {$confirm_type} com sucesso!", "index.php?class=UsersList");
-    }
-
-    public function Delete($param)
-    {
-        try {
-            $id = $param['id']; // obtém a chave
-            Transaction::open('contaazul'); // inicia transação com o banco 'livro'
-            $user = Users::find($id);
-            $user->delete(); // deleta objeto do banco de dados
-            Transaction::close(); // finaliza a transação
-            $this->onReload(); // recarrega a datagrid
-        } catch (Exception $e) {
-            new Message('warning', $e->getMessage());
-        }
     }
 
     function show()
@@ -125,5 +109,4 @@ class UsersList extends Page
         }
         parent::show();
     }
-
 }

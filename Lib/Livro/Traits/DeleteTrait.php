@@ -24,7 +24,7 @@ trait DeleteTrait
             $id = $param['id'];
             $activeRecord = $param['activeRecord'];
             Transaction::open($this->connection); //abre a transação
-            $class  = $activeRecord;         //cria um repositório
+            $class  = $activeRecord;              //cria um repositório
             $object = $class::find($id);
             $object->delete();
             Transaction::close();
