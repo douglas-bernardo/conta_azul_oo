@@ -10,9 +10,9 @@ final class Connection{//final class não pode ter descendentes - n pode ser sup
 
     public static function open($name){
         //verifica se existe o arquivo de configuração para este banco de dados
-        if(file_exists("App/config/{$name}.ini")){
+        if(file_exists("App/Config/{$name}.ini")){
             //le o arquivo em forma de array
-            $db = parse_ini_file("App/config/{$name}.ini");
+            $db = parse_ini_file("App/Config/{$name}.ini");
         }
         else {
             throw new Exception("Arquivo '$name' não encontrado!");
